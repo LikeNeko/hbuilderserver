@@ -4,10 +4,15 @@ namespace App\Model;
 use PhalApi\Model\NotORMModel as NotORM;
 
 class Questions extends NotORM {
+
+	/**
+	 * 获取随机的十条数据
+	 * @return mixed
+	 */
     public function randTen ()
     {
         $quest = $this->getORM();
-        $data = $quest->select('id,title,`key`')->order("rand(),id")->limit(15);
+        $data = $quest->select('id,title,`key`')->order("rand()")->limit(15);
 
         $dataInfo = $data->fetchAll();
         foreach ( $dataInfo as $key=>$datum ) {
@@ -15,4 +20,5 @@ class Questions extends NotORM {
         }
         return $dataInfo;
     }
+  
 }

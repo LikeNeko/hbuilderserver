@@ -2,6 +2,8 @@
 namespace App\Api;
 
 use PhalApi\Api;
+use PhalApi\Exception\BadRequestException;
+
 
 class GetQuestions extends Api {
 
@@ -21,10 +23,33 @@ class GetQuestions extends Api {
      */
     public function SetReply()
     {
-        $data = $_POST;
-        $data = json_decode($data['data']);
-		DI()->logger->error(json_encode($data));
+        $tmp = $_POST;
+		$model = new \App\Model\Userreply();
 
-        return array('info'=>(($data)));
+		$data = $tmp['reply'];
+		$setdata = [];
+		if($tmp['uuid'] && $tmp['reply']){
+			foreach ($data as $key=>$v){
+				array_push($setdata, [
+					"uuid"=>$tmp['uuid'],
+					'question_id'=>$v['id'],
+					'reply'=>$v['key'],
+					'crtime'=>time()
+				]);
+
+			}
+			
+			$info  = $model->setReply($setdata);
+			switch($info){
+				case 15:
+					return array('status'=>'success');
+				case 3:
+					throw new BadRequestException('已经提交过了！',3);
+			}
+			throw  new BadRequestException('reply num is error',2);
+		}else{
+			throw new BadRequestException('uuid and reply error' ,1);
+		}
+
     }
 }
