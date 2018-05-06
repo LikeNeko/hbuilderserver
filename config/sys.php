@@ -27,4 +27,18 @@ return array(
     'crypt' => array(
         'mcrypt_iv' => '12345678',      //8位
     ),
+    /**
+     * 注册加密key
+     */
+    'reg_encode' => array(
+        'key' => 'nekomiao',      //8位
+    ),
+
+    /**
+     * 融云key
+     */
+    'rongyun'=>array(
+        'key'=>'kj7swf8ok1xf2',
+        'secret'=>"ZuRj4cMr0A"
+    )
 );

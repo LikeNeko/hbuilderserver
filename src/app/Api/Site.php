@@ -1,7 +1,9 @@
 <?php
 namespace App\Api;
 
+use function App\getToken;
 use PhalApi\Api;
+use PhalApi\Exception\BadRequestException;
 
 /**
  * 默认接口服务类
@@ -29,6 +31,9 @@ class Site extends Api {
      * @exception 400 非法请求，参数传递错误
 	 */
 	public function index() {
+
+	    getToken(1);
+
         return array(
             'title' => 'Hello ' . $this->username,
             'version' => PHALAPI_VERSION,

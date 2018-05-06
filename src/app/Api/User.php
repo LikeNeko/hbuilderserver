@@ -29,16 +29,37 @@ class User extends Api
                 // 获取HTTP请求方法，判断是POST还是GET
                 'method'   => ['name' => 'REQUEST_METHOD', 'source' => 'server'],
             ],
+            "Login" => [
+                "account"  => ['name' => "account", 'require' => true, 'source' => "post", "min" => 6, "max" => 10],
+                "password" => ["name" => "password", 'require' => true, 'source' => "post", "min" => 8, "max" => 16],
+                "uuid"     => ["name" => "uuid", 'require' => true, 'source' => "post", "min" => 1],
+                // 获取HTTP请求方法，判断是POST还是GET
+                'method'   => ['name' => 'REQUEST_METHOD', 'source' => 'server'],
+            ],
         ];
     }
 
 
+    /**
+     * @desc 设置一个用户
+     * @return array
+     */
     public function SetUser ()
     {
         $userDomain = new \App\Domain\UserDomain();
 
-        $uid = $userDomain->setUser($this->account, $this->password, $this->email, $this->uuid);
+        $data = $userDomain->setUser($this->account, $this->password, $this->email, $this->uuid);
 
-        return ['uid' => $uid];
+        return ['uid' => $data['uid'],"token"=>$data['token']];
     }
+
+    /**
+     * @desc 登陆操作
+     */
+    public function Login ()
+    {
+        $userDomain = new \App\Domain\UserDomain();
+        return $userDomain->Login($this->account,$this->password,$this->uuid);
+    }
+
 }
